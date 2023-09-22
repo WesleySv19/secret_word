@@ -23,6 +23,18 @@ function App() {
   const [guesses, setGuesses] = useState(guessesQty)
   const [score, setScore] = useState(0)
 
+  const pickedWordAndCategory = useCallback(() => {
+    //PICK A RANDOM CATEGORY
+    const categories = Object.keys(words)
+    const category = categories[Math.floor(Math.random() * Object.keys(categories).length)]
+
+    //PICK A RANDOM WORD
+    const word = words[category][Math.floor(Math.random() * words[category].length)]
+
+    return { category, word }
+
+  }, [words])
+
   return (
     <div className='App'>
       {gameStage === 'start' && <StartScreen startGame={startGame}/>}
