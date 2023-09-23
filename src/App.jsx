@@ -35,6 +35,27 @@ function App() {
 
   }, [words])
 
+  //STARTS THE SECRET WORD GAME
+  const startGame = useCallback(() => {
+
+    // clear all letters
+    clearLetterStates()
+
+
+    const { category, word } = pickedWordAndCategory()
+
+    //CREATE AN ARRAYS OF LETTERS
+    let wordLetters = word.split('')
+    wordLetters = wordLetters.map( (l) => l.toLowerCase())
+
+    //FILL STATES
+    setPickedWord(word)
+    setPickeCategory(category)
+    setLetters(wordLetters)
+
+    setGameStage(stages[1].name)
+  }, [pickedWordAndCategory])
+
   return (
     <div className='App'>
       {gameStage === 'start' && <StartScreen startGame={startGame}/>}
