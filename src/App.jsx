@@ -56,6 +56,32 @@ function App() {
     setGameStage(stages[1].name)
   }, [pickedWordAndCategory])
 
+  //PROCESS THE LETTER INPUT
+  const verifyLetter = (letter) => {
+    const normalizeLetter = letter.toLowerCase()
+
+    // check if letter has already been utilized
+    if(guessedLetters.includes(normalizeLetter) || wrongLetters.includes(normalizeLetter)) {
+      return
+    }
+
+    // push guessed letter or remove a guess 
+    if(letters.includes(normalizeLetter)) {
+      setGuessedLetters((actualGuessedLetters) => [
+        ...actualGuessedLetters,
+        normalizeLetter
+      ])
+    } else {
+      setWrongLetters((actualWrongLetters) => [
+        ...actualWrongLetters,
+        normalizeLetter
+      ])
+
+      setGuesses((actualGuesses) => actualGuesses -1)
+    }
+
+  }
+
   return (
     <div className='App'>
       {gameStage === 'start' && <StartScreen startGame={startGame}/>}
