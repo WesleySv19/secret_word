@@ -1,15 +1,17 @@
-import { useState, useEffect } from 'react'
 import { wordsList } from './data/words'
 import './App.css'
 import StartScreen from './components/StartScreen'
 import Game from './components/Game'
 import GameOver from './components/GameOver'
+import { useCallback, useEffect, useState  } from 'react'
 
 const stages = [
   { id: 1, name: 'start' },
   { id: 2, name: 'game' },
   { id: 3, name: 'end' },
 ]
+
+const guessesQty = 3
 function App() {
   const [gameStage, setGameStage] = useState(stages[0].name)
   const [words] = useState(wordsList)
@@ -80,6 +82,40 @@ function App() {
       setGuesses((actualGuesses) => actualGuesses -1)
     }
 
+  }
+
+  const clearLetterStates = () => {
+    setGuessedLetters([])
+    setWrongLetters([])
+  }
+
+  // check if guesses end
+  useEffect(() => {
+    if(guesses <= 0) {
+      clearLetterStates()
+      setGameStage(stages[2].name)
+    }
+  }, [guesses])
+
+  // check win condition
+  useEffect(() => {
+    const uniqueLetters = [... new Set(letters)]
+
+    if(guessedLetters.length === uniqueLetters.length) {
+      // add score
+      setScore((actualScore) => actualScore += 100)
+
+      // restart game with new word
+      startGame()
+    }
+    // win conditon
+  }, [guessedLetters, letters, startGame], )
+
+  // RESTARTS THE GAME
+  const retry = () => {
+    setScore(0)
+    setGuesses(guessesQty)
+    setGameStage(stages[0].name)
   }
 
   return (
